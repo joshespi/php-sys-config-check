@@ -1,0 +1,10 @@
+:root {
+    --primary-color: blue;
+    --white-color: #fff;
+    --black-color: #000;
+    --grey-color: #eee;
+    --error: red;
+    --border-radius: 8px;
+    --box-shadow: 2px 2px 1px #ccc;
+    --text-shadow: 2px 2px 1px #ccc;
+}
