@@ -1,4 +1,5 @@
 <?php
+$createAdmin = false;
 $db_error=$fatal_error = false;
 $php_error = $mysql_error = $session_error="";
 //check PHP version
@@ -95,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $checkfordbquery = 'SHOW DATABASES LIKE "' . $dbname . '"';
     $checkfordbresults = $link->query($checkfordbquery);
     if($checkfordbresults->num_rows == 1) {
-      echo 'found db';
+      $createAdmin = true;
     } else {
       $createdbsql = "CREATE DATABASE ".$dbname;
       if ($link->query($createdbsql) === TRUE) {
@@ -118,9 +119,9 @@ if(file_exists($conf_file)) {
   //check for database
   $link = mysqli_connect($conf['dbhost'], $conf['dbuser'], $conf['dbpass'],$conf['dbname']);
   if($link) {
-      echo 'link establisted';
+    $createAdmin = true;
   }else{
-    echo 'link not establisted';
+    echo 'link not established';
   } 
 } else {
   ?>
