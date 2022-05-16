@@ -238,3 +238,10 @@ if($createAdmin = true) {
 }
 ?>
 
+CREATE TABLE `espidesk`.`users` (
+  `id` INT NOT NULL,
+  `user_name` VARCHAR(50) NOT NULL,
+  `user_pass` VARCHAR(200) NOT NULL,
+  `created_at` DATETIME NULL,
+  `user_email` VARCHAR(100) NULL,
+  PRIMARY KEY (`id`));
