@@ -1,6 +1,7 @@
 body {
     background-color: var(--grey-color);
 }
+h1 {text-align: center;}
 form {
     max-width: 500px;
     margin: 0 auto;
