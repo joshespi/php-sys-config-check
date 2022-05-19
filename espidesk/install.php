@@ -211,41 +211,58 @@ else
   chmod('inc/db_connect.php', 0666);
 }
 */
-if($createAdmin = true) {
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if($createAdmin == true) {
+    $user_table_test = 'SELECT id FROM users';
+    $user_table_test_results = $link->query($user_table_test);
+    if($user_table_test_results !== FALSE) {
+      //table exists, move on
+    } else {
+      $create_user_table = "CREATE TABLE `espidesk`.`users` (
+        `id` INT NOT NULL,
+        `user_name` VARCHAR(50) NOT NULL,
+        `user_pass` VARCHAR(255) NOT NULL,
+        `created_at` DATETIME NULL,
+        `user_email` VARCHAR(255) NULL,
+        PRIMARY KEY (`id`));";
+  
+        if( $link->query($create_user_table) === TRUE ) {
+          echo "database connection success! Create your first user";
+        } else {
+          echo "error creating database tables. Check permissions and try again.";
+        }
+    }
 
-  }else {
-    ?>
-    <!doctype html>
-      <html lang="en">
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          <title>EspiDesk Create Admin</title>
-          <link rel="stylesheet" href="assets/css/variable.css?v=1.0">
-          <link rel="stylesheet" href="assets/css/general.css?v=1.0">
-          <link rel="stylesheet" href="assets/css/installer.css?v=1.0">
-        </head>
+    
+   
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        <body>
-          <h1>Espi Desk Create Admin</h1>
-          <form action="install.php" method="post">
-            <label for="user_name">Username:</label><input type="text" name="user_name" id="user_name" placeholder="Username">
-            <label for="user_pass">Password:</label><input type="password" name="user_pass" id="user_pass" placeholder="Password">
-            <label for="user_email">Email:</label><input type="text" name="user_email" id="user_email" placeholder="Email">
-            <input type="submit" value="Create User">
-          </form>
-        </body>
-      </html>
-    <?php
-  }
+    } else {
+      ?>
+      <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <title>EspiDesk Create Admin</title>
+              <link rel="stylesheet" href="assets/css/variable.css?v=1.0">
+              <link rel="stylesheet" href="assets/css/general.css?v=1.0">
+              <link rel="stylesheet" href="assets/css/installer.css?v=1.0">
+            </head>
+    
+            <body>
+              <h1>Espi Desk Create Admin</h1>
+              <form action="install.php" method="post">
+                <label for="user_name">Username:</label><input type="text" name="user_name" id="user_name" placeholder="Username">
+                <label for="user_pass">Password:</label><input type="password" name="user_pass" id="user_pass" placeholder="Password">
+                <label for="user_email">Email:</label><input type="text" name="user_email" id="user_email" placeholder="Email">
+                <input type="submit" value="Create User">
+              </form>
+            </body>
+          </html>
+        <?php
+    }
+
+
+
 }
 ?>
-
-CREATE TABLE `espidesk`.`users` (
-  `id` INT NOT NULL,
-  `user_name` VARCHAR(50) NOT NULL,
-  `user_pass` VARCHAR(200) NOT NULL,
-  `created_at` DATETIME NULL,
-  `user_email` VARCHAR(100) NULL,
-  PRIMARY KEY (`id`));
