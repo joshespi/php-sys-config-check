@@ -85,8 +85,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     die('Could not connect: ' . mysql_error());
   } else {
     $confcreds = "<?php return array('dbhost' => '".$dbhost."','dbuser' => '".$dbuser."','dbpass' => '".$dbpass."', 'dbname' => '".$dbname."'); ?>";
-     $filename = 'config/db.php';
-     $makeconf = fopen($filename, "wb");
+    $config_path =  __DIR__.'/config';
+    if(!is_dir($config_path)) {
+      mkdir($config_path, 0770, true);
+    }
+    $filename = __DIR__.'/config/db.php';
+     $makeconf = fopen($filename, "w");
      if(!$makeconf) {
        die('Error creating the file ' . $filename);
      } else {
