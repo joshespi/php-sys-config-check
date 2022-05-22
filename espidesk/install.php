@@ -43,7 +43,22 @@ if($fatal_error == true){
   
 }
 
-//if is POST
+
+
+
+//check if config file exists
+$conf_file = 'config/db.php';
+if(file_exists($conf_file)) {
+  $conf = include($conf_file);
+  //check for database
+  $link = mysqli_connect($conf['dbhost'], $conf['dbuser'], $conf['dbpass'],$conf['dbname']);
+  if($link) {
+    $createAdmin = true;
+  }else{
+    echo 'link not established';
+  } 
+} else {
+  //if is POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   
   // collect value of input field
@@ -114,20 +129,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  
 
 }
-
-
-//check if config file exists
-$conf_file = 'config/db.php';
-if(file_exists($conf_file)) {
-  $conf = include($conf_file);
-  //check for database
-  $link = mysqli_connect($conf['dbhost'], $conf['dbuser'], $conf['dbpass'],$conf['dbname']);
-  if($link) {
-    $createAdmin = true;
-  }else{
-    echo 'link not established';
-  } 
-} else {
   ?>
     <!doctype html>
       <html lang="en">
@@ -218,7 +219,7 @@ if($createAdmin == true) {
       //table exists, move on
     } else {
       $create_user_table = "CREATE TABLE `espidesk`.`users` (
-        `id` INT NOT NULL,
+        `id` INT NOT NULL AUTO_INCREMENT,
         `user_name` VARCHAR(50) NOT NULL,
         `user_pass` VARCHAR(255) NOT NULL,
         `created_at` DATETIME NULL,
@@ -235,6 +236,19 @@ if($createAdmin == true) {
     
    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        
+        // collect value of input fields
+        $nu_user = trim($_POST['user_name']);
+        $nu_pass = trim($_POST['user_pass']);
+        $nu_email = trim($_POST['user_email']);
+        if(!empty($nu_user) && !empty($nu_pass) && !empty($nu_email)){
+          $first_user_insert = "INSERT INTO USERS(user_name,user_pass,user_email) VALUES ('".$nu_user."','".$nu_pass."','".$nu_email."')";
+          if($link->query($first_user_insert) === TRUE){
+            header( 'Location: index.php' );
+          } else {
+            echo "error: ". $first_user_insert."<br>".$link->error;
+          }
+        }
 
     } else {
       ?>
@@ -261,8 +275,5 @@ if($createAdmin == true) {
           </html>
         <?php
     }
-
-
-
 }
 ?>
