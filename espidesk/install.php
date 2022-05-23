@@ -222,7 +222,7 @@ if($createAdmin == true) {
         `id` INT NOT NULL AUTO_INCREMENT,
         `user_name` VARCHAR(50) NOT NULL,
         `user_pass` VARCHAR(255) NOT NULL,
-        `created_at` DATETIME NULL,
+        `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
         `user_email` VARCHAR(255) NULL,
         PRIMARY KEY (`id`));";
   
@@ -240,9 +240,10 @@ if($createAdmin == true) {
         // collect value of input fields
         $nu_user = trim($_POST['user_name']);
         $nu_pass = trim($_POST['user_pass']);
+        $hash_pass = password_hash($nu_pass, PASSWORD_DEFAULT);
         $nu_email = trim($_POST['user_email']);
         if(!empty($nu_user) && !empty($nu_pass) && !empty($nu_email)){
-          $first_user_insert = "INSERT INTO USERS(user_name,user_pass,user_email) VALUES ('".$nu_user."','".$nu_pass."','".$nu_email."')";
+          $first_user_insert = "INSERT INTO USERS(user_name,user_pass,user_email) VALUES ('".$nu_user."','".$hash_pass."','".$nu_email."')";
           if($link->query($first_user_insert) === TRUE){
             header( 'Location: index.php' );
           } else {
