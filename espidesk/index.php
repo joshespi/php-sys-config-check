@@ -102,17 +102,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             die("Failed to establish connection");
         } else {
         ?>
-        <!doctype html>
-            <html lang="en">
-            <head>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <title>EspiDesk Login</title>
-                <link rel="stylesheet" href="assets/css/variable.css?v=1.0">
-                <link rel="stylesheet" href="assets/css/general.css?v=1.0">
-                <link rel="stylesheet" href="assets/css/installer.css?v=1.0">
-            </head>
-            <body>
+        
+            <?php include('header.php'); ?>
                 <h1>Espi Desk Login</h1>
                 <?php 
                     echo $login_err;
@@ -124,17 +115,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <label for="user_pass">Password:</label><input type="password" name="user_pass" id="user_pass" placeholder="Password">
                 <input type="submit" value="Login">
                 </form>
-            </body>
-            </html>
+            <?php include('footer.php'); ?>
         <?php
         }
     }
 
    
-    echo '<h2>POST</h2>POST';
-    print_r($_POST);
-    echo '<h2>SESSION</h2>';
-    print_r($_SESSION);
-    echo '<h2>FILES</h2>';
-    print_r($_FILES);
+
 ?>

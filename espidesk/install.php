@@ -129,30 +129,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  
 
 }
-  ?>
-    <!doctype html>
-      <html lang="en">
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          <title>EspiDesk Installer</title>
-          <link rel="stylesheet" href="assets/css/variable.css?v=1.0">
-          <link rel="stylesheet" href="assets/css/general.css?v=1.0">
-          <link rel="stylesheet" href="assets/css/installer.css?v=1.0">
-        </head>
-
-        <body>
-          <h1>Espi Desk Installer</h1>
-          <form action="install.php" method="post">
-            <label for="dbhost">Hostname:</label><input type="text" name="dbhost" id="dbhost" value="localhost">
-            <label for="dbuser">Database Username:</label><input type="text" name="dbuser" id="dbuser" value="user">
-            <label for="dbpass">Database Password:</label><input type="text" name="dbpass" id="dbpass" value="pass">
-            <label for="dbname">Database Name:</label><input type="text" name="dbname" id="dbname" value="name">
-            <input type="submit" value="Run Setup">
-          </form>
-        </body>
-      </html>
-  <?php
 }
 
 
@@ -212,6 +188,8 @@ else
   chmod('inc/db_connect.php', 0666);
 }
 */
+<?php include('header.php'); ?>
+      <?php include('footer.php'); ?>
 if($createAdmin == true) {
     $user_table_test = 'SELECT id FROM users';
     $user_table_test_results = $link->query($user_table_test);
@@ -232,6 +210,8 @@ if($createAdmin == true) {
           echo "error creating database tables. Check permissions and try again.";
         }
     }
+      <?php include('header.php'); ?>
+             <?php include('footer.php'); ?>
 
     
    
@@ -252,19 +232,6 @@ if($createAdmin == true) {
         }
 
     } else {
-      ?>
-      <!doctype html>
-          <html lang="en">
-            <head>
-              <meta charset="utf-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1">
-              <title>EspiDesk Create Admin</title>
-              <link rel="stylesheet" href="assets/css/variable.css?v=1.0">
-              <link rel="stylesheet" href="assets/css/general.css?v=1.0">
-              <link rel="stylesheet" href="assets/css/installer.css?v=1.0">
-            </head>
-    
-            <body>
               <h1>Espi Desk Create Admin</h1>
               <form action="install.php" method="post">
                 <label for="user_name">Username:</label><input type="text" name="user_name" id="user_name" placeholder="Username">
@@ -272,8 +239,6 @@ if($createAdmin == true) {
                 <label for="user_email">Email:</label><input type="text" name="user_email" id="user_email" placeholder="Email">
                 <input type="submit" value="Create User">
               </form>
-            </body>
-          </html>
         <?php
     }
 }
