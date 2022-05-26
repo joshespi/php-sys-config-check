@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       if ($link->query($createdbsql) === TRUE) {
         echo "Database created successfully";
       } else {
-        echo "Error creating database: " . $conn->error;
+        echo "Error creating database: " . $link->error;
       }
     }
   }
