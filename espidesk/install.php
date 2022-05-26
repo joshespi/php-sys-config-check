@@ -45,7 +45,6 @@ if($fatal_error == true){
 
 
 
-
 //check if config file exists
 $conf_file = 'config/db.php';
 if(file_exists($conf_file)) {
@@ -120,6 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $createdbsql = "CREATE DATABASE ".$dbname;
       if ($link->query($createdbsql) === TRUE) {
         echo "Database created successfully";
+        $createAdmin = true;
       } else {
         echo "Error creating database: " . $link->error;
       }
@@ -188,36 +188,56 @@ else
   chmod('inc/db_connect.php', 0666);
 }
 */
+if($createAdmin == false) {
+  ?>
 <?php include('header.php'); ?>
+      <h1>Espi Desk Installer</h1>
+      <form action="install.php" method="post">
+        <label for="dbhost">Hostname:</label><input type="text" name="dbhost" id="dbhost" value="localhost">
+        <label for="dbuser">Database Username:</label><input type="text" name="dbuser" id="dbuser" value="user">
+        <label for="dbpass">Database Password:</label><input type="text" name="dbpass" id="dbpass" value="pass">
+        <label for="dbname">Database Name:</label><input type="text" name="dbname" id="dbname" value="name">
+        <input type="submit" value="Run Setup">
+      </form>
       <?php include('footer.php'); ?>
+<?php
+}
 if($createAdmin == true) {
-    $user_table_test = 'SELECT id FROM users';
-    $user_table_test_results = $link->query($user_table_test);
-    if($user_table_test_results !== FALSE) {
-      //table exists, move on
-    } else {
-      $create_user_table = "CREATE TABLE `espidesk`.`users` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `user_name` VARCHAR(50) NOT NULL,
-        `user_pass` VARCHAR(255) NOT NULL,
-        `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-        `user_email` VARCHAR(255) NULL,
-        PRIMARY KEY (`id`));";
-  
-        if( $link->query($create_user_table) === TRUE ) {
-          echo "database connection success! Create your first user";
-        } else {
-          echo "error creating database tables. Check permissions and try again.";
-        }
-    }
+  ?>
       <?php include('header.php'); ?>
+             <h1>Espi Desk Create Admin</h1>
+             <form action="install.php" method="post">
+               <label for="user_name">Username:</label><input type="text" name="user_name" id="user_name" placeholder="Username">
+               <label for="user_pass">Password:</label><input type="password" name="user_pass" id="user_pass" placeholder="Password">
+               <label for="user_email">Email:</label><input type="text" name="user_email" id="user_email" placeholder="Email">
+               <input type="submit" value="Create User">
+             </form>
              <?php include('footer.php'); ?>
+    <?php
+    
 
     
    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        
+      $user_table_test = 'SELECT id FROM users';
+      $user_table_test_results = $link->query($user_table_test);
+      if($user_table_test_results !== FALSE) {
+        //table exists, move on
+      } else {
         $create_user_table = "CREATE TABLE `".$dbname."`.`users` (
+          `id` INT NOT NULL AUTO_INCREMENT,
+          `user_name` VARCHAR(50) NOT NULL,
+          `user_pass` VARCHAR(255) NOT NULL,
+          `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+          `user_email` VARCHAR(255) NULL,
+          PRIMARY KEY (`id`));";
+    
+          if( $link->query($create_user_table) === TRUE ) {
+            echo "database connection success! Create your first user";
+          } else {
+            echo "error creating database tables. Check permissions and try again.";
+          }
+      }
         // collect value of input fields
         $nu_user = trim($_POST['user_name']);
         $nu_pass = trim($_POST['user_pass']);
@@ -233,14 +253,7 @@ if($createAdmin == true) {
         }
 
     } else {
-              <h1>Espi Desk Create Admin</h1>
-              <form action="install.php" method="post">
-                <label for="user_name">Username:</label><input type="text" name="user_name" id="user_name" placeholder="Username">
-                <label for="user_pass">Password:</label><input type="password" name="user_pass" id="user_pass" placeholder="Password">
-                <label for="user_email">Email:</label><input type="text" name="user_email" id="user_email" placeholder="Email">
-                <input type="submit" value="Create User">
-              </form>
-        <?php
+      
     }
 }
 ?>
