@@ -217,6 +217,7 @@ if($createAdmin == true) {
    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
+        $create_user_table = "CREATE TABLE `".$dbname."`.`users` (
         // collect value of input fields
         $nu_user = trim($_POST['user_name']);
         $nu_pass = trim($_POST['user_pass']);
